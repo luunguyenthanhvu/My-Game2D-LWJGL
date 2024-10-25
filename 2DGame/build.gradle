@@ -57,6 +57,9 @@ dependencies {
     runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
     implementation "org.joml:joml:${jomlVersion}"
 
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.34'
+
     //IMGUI
     implementation "io.github.spair:imgui-java-app:$imguiVersion"
     implementation "io.github.spair:imgui-java-binding:$imguiVersion"
