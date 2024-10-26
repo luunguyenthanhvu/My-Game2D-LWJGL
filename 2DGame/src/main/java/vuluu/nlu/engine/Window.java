@@ -2,13 +2,14 @@ package vuluu.nlu.engine;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import vuluu.nlu.constant.GameConstants;
-import vuluu.nlu.scenes.Scene;
-import vuluu.nlu.scenes.SceneInitializer;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Window implements Observer {
@@ -17,7 +18,6 @@ public class Window implements Observer {
   String title;
 
   static Window window = null;
-  static Scene currentScene;
 
   public Window() {
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -28,16 +28,9 @@ public class Window implements Observer {
     // EventSystem.addObserver(this);
   }
 
-  public static void changScene(SceneInitializer sceneInitializer) {
-    if (currentScene != null) {
-      // currentScene.destroy();
-    }
-    // getImGui
-  }
-
 
   public void run() {
-
+    
   }
 
   @Override
