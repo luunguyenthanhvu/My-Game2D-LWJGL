@@ -20,8 +20,8 @@ void main()
     gl_Position = uProjection * uView * vec4(aPos, 1.0);
 }
 
-    #type fragment
-    #version 330 core
+#type fragment
+#version 330 core
 
 in vec4 fColor;
 in vec2 fTexCoords;
@@ -34,8 +34,8 @@ out vec4 color;
 void main()
 {
 
-    if (fTexID > 0) {         // TODO maybe remake this shader with if statements instead of casting for mac?
-        int id = int(fTexID); // Apparently Mac M1 bug here lol cant cast from float to int.
+    if (fTexID > 0) { // TODO maybe remake this shader with if statements instead of casting for mac?
+        int id = int(fTexID);// Apparently Mac M1 bug here lol cant cast from float to int.
         color = fColor * texture(uTextures[id], fTexCoords);
     } else {
         color = fColor;
