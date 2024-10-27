@@ -3,7 +3,6 @@ package vuluu.nlu.engine;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_MAXIMIZED;
 import static org.lwjgl.glfw.GLFW.GLFW_RESIZABLE;
 import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
@@ -40,6 +39,7 @@ import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 import vuluu.nlu.constant.GameConstants;
+import vuluu.nlu.utils.Time;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Window implements Observer {
@@ -48,8 +48,9 @@ public class Window implements Observer {
   String title;
   long glfwWindow;
   static Window window = null;
-  float r, g, b, a;
+  protected float r, g, b, a;
   boolean fadeToBlack = false;
+  static Scene currentScene = null;
 
   public Window() {
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -60,6 +61,23 @@ public class Window implements Observer {
     g = 1;
     b = 1;
     a = 1;
+  }
+
+  public static void changeScene(int newScene) {
+    switch (newScene) {
+      case 0:
+        currentScene = new LevelEditorScene();
+        // currentScene.init();
+        break;
+
+      case 1:
+        currentScene = new LevelScene();
+        // currentScene.init();
+        break;
+      default:
+        assert false : " Unknow scene";
+        break;
+    }
   }
 
   public static Window get() {
@@ -122,26 +140,31 @@ public class Window implements Observer {
     glfwShowWindow(glfwWindow);
 
     GL.createCapabilities();
+
+    Window.changeScene(0);
+
   }
 
   private void loop() {
+    float beginTime = Time.getTime();
+    float endTime;
+    float dt = -1.0f;
+
     while (!glfwWindowShouldClose(glfwWindow)) {
       glfwPollEvents();
 
       glClearColor(r, g, b, a);
       glClear(GL_COLOR_BUFFER_BIT);
 
-      if (fadeToBlack) {
-        r = Math.max(r - 0.01f, 0);
-        g = Math.max(g - 0.01f, 0);
-        b = Math.max(b - 0.01f, 0);
-      }
-
-      if (KeyListener.isKeyPressed(GLFW_KEY_SPACE)) {
-        fadeToBlack = true;
+      if (dt >= 0) {
+        currentScene.update(dt);
       }
 
       glfwSwapBuffers(glfwWindow);
+
+      endTime = Time.getTime();
+      dt = endTime - beginTime;
+      beginTime = endTime;
     }
   }
 
